@@ -9,7 +9,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
- * IRemotePublisherForListener. Interface to remote publisher in order to subscribe 
+ * IRemotePublisherForListener. Interface to remote publisher in order to subscribe
  * and unsubscribe listeners to properties. In case a property changes in the domain, 
  * all listeners subscribed to that property will be informed through a (remote) 
  * method invocation of propertyChange(). Listeners subscribed to the null-String 

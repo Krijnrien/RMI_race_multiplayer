@@ -1,6 +1,6 @@
 package Server;
 
-import Shared.Fonds;
+import Client.carVector;
 import publisher.RemotePublisher;
 
 import java.io.Serializable;
@@ -9,31 +9,31 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
 class Informer extends UnicastRemoteObject implements Serializable {
-	private RemotePublisher remotePublisher;
+    private RemotePublisher remotePublisher;
 
+    Informer(RemotePublisher publisher) throws RemoteException {
+        remotePublisher = publisher;
+        remotePublisher.registerProperty("car");
+        Timer timer = new Timer();
 
-	Informer(RemotePublisher publisher) throws RemoteException {
-		remotePublisher = publisher;
-		remotePublisher.registerProperty("fondsen");
-		createMockFonds();
-		Timer timer = new Timer();
-		//Set a timer to regenerate the stocks every minute
-		timer.schedule(new TimerTask() {
-			@Override
-			public void run() {
-				createMockFonds();
-			}
-		}, 0, 2000);
-	}
+        timer.schedule(new TimerTask() {
+            int i = 0;
 
-	private void createMockFonds() {
-		Random rand = new Random();
-		try {
-			System.out.println("Sending from server!");
-			remotePublisher.inform("fondsen", null, new Fonds("Test", rand.nextInt()));
-		} catch(RemoteException e) {
-			e.printStackTrace();
-		}
-	}
+            @Override
+            public void run() {
+                mockCarVector(i);
+                i++;
+            }
+        }, 0, 100);
+    }
+
+    private void mockCarVector(int i) {
+        try {
+            System.out.println("Sending from server!");
+            remotePublisher.inform("car", null, new carVector(10, i, 90));
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
 }
 

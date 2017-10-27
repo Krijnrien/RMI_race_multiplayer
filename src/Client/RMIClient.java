@@ -27,7 +27,7 @@ public class RMIClient extends UnicastRemoteObject implements IRemotePropertyLis
 		try {
 			Registry registry = LocateRegistry.getRegistry("localhost", 8080);
 			IRemotePublisherForListener publisher = (IRemotePublisherForListener) registry.lookup("publisher");
-			publisher.subscribeRemoteListener(this, "fondsen");
+			publisher.subscribeRemoteListener(this, "car");
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

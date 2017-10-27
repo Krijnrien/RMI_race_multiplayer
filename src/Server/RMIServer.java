@@ -7,18 +7,18 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 public class RMIServer {
-	private static final int portNr = 8080;
+	private static final int portNr = 8082;
 
 	public static void main(String[] args) throws RemoteException {
 		System.out.println("Server started");
 		RMIServer rmiServer = new RMIServer();
 	}
 
-	public RMIServer() throws RemoteException {
+	private RMIServer() throws RemoteException {
 		RemotePublisher publisher = new RemotePublisher();
-		Informer effectenBeurs = new Informer(publisher);
+		Informer informer = new Informer(publisher);
 		Registry registry = LocateRegistry.createRegistry(portNr);
-		registry.rebind("Effectenbeurs", effectenBeurs);
+		registry.rebind("Effectenbeurs", informer);
 		registry.rebind("publisher", publisher);
 	}
 }

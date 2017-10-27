@@ -6,6 +6,7 @@
 package Client;
 
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -50,7 +51,12 @@ public class DialogDesignController implements Initializable {
             public void handle(ActionEvent e) {
                 RacingGame.address = address.getText();
                 RacingGame.server = hostbtn.isSelected();
-                RacingGame game = new RacingGame();
+                RacingGame game = null;
+                try {
+                    game = new RacingGame();
+                } catch (RemoteException e1) {
+                    e1.printStackTrace();
+                }
                 try {
                     game.start(OptionDialog.window);
                     OptionDialog.window.centerOnScreen();

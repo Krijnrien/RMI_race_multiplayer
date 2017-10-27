@@ -10,7 +10,7 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 /**
- * IRemotePublisherForDomain. Interface to remote publisher in order to register 
+ * IRemotePublisherForDomain. Interface to remote publisher in order to register
  * and unregister properties, and to inform (remote) property listeners about 
  * changes of registered properties. In case a property changes in the domain, 
  * all listeners subscribed to that property will be informed through a 
