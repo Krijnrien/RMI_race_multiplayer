@@ -57,6 +57,8 @@ class Car {
 
     }
 
+
+
     private void translateByVector(Vector v) {
         locationX.set(locationX.get() + v.getX());
         locationY.set(locationY.get() + v.getY());

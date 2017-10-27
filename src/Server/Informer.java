@@ -1,6 +1,6 @@
 package Server;
 
-import Client.carVector;
+import Shared.carVector;
 import publisher.RemotePublisher;
 
 import java.io.Serializable;
@@ -16,7 +16,7 @@ class Informer extends UnicastRemoteObject implements Serializable {
         remotePublisher.registerProperty("car");
         Timer timer = new Timer();
 
-        timer.schedule(new TimerTask() {
+        /*timer.schedule(new TimerTask() {
             int i = 0;
 
             @Override
@@ -24,13 +24,13 @@ class Informer extends UnicastRemoteObject implements Serializable {
                 mockCarVector(i);
                 i++;
             }
-        }, 0, 100);
+        }, 0, 100);*/
     }
 
-    private void mockCarVector(int i) {
+    public void mockCarVector(carVector _carVector) {
         try {
             System.out.println("Sending from server!");
-            remotePublisher.inform("car", null, new carVector(10, i, 90));
+            remotePublisher.inform("car", null, new carVector(_carVector.getLocationX(), _carVector.getLocationY() - 30, _carVector.getDirection()));
         } catch (RemoteException e) {
             e.printStackTrace();
         }

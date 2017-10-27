@@ -9,6 +9,8 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
+import Shared.IupdateCar;
+import Shared.carVector;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -40,28 +42,16 @@ public class RacingGame extends Application implements IRemotePropertyListener {
     private KeyCode keyPressedCode = null;
     private Timeline gameLoop;
     private long time = 0;
+    private IupdateCar updateCar;
 
-    public RacingGame() throws RemoteException {
-            UnicastRemoteObject.exportObject(this,0);
-
-        try {
-            Registry registry = LocateRegistry.getRegistry("localhost", 8082);
-            IRemotePublisherForListener publisher = (IRemotePublisherForListener) registry.lookup("publisher");
-            publisher.subscribeRemoteListener(RacingGame.this, "car");
-        } catch (Exception e) {
-            System.out.println("Error setting remote listener" + e);
-            e.printStackTrace();
-        }
-
-    }
 
     public static void main(String[] args) {
         launch(args);
-
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        UnicastRemoteObject.exportObject(this, 0);
 
         Pane container = new Pane();
         Scene scene = new Scene(container, width, height);
@@ -71,17 +61,24 @@ public class RacingGame extends Application implements IRemotePropertyListener {
         loadLevel(Level_01.lowerBounds, Level_01.upperBounds, container.getChildren());
         car1 = new Car();
         car2 = new Car();
-        double w = 35;
-        car1.setLocationByVector(Level_01.startCar1[0] - w, height - Level_01.startCar1[1]);
+        car1.setLocationByVector(Level_01.startCar1[0] - 35, height - Level_01.startCar1[1]);
         car1.setDirection(90);
         car1.getGraphics().setFill(Color.MEDIUMPURPLE);
 
-        car2.setLocationByVector(Level_01.startCar1[0] - w, height - Level_01.startCar1[1]);
+        car2.setLocationByVector(Level_01.startCar1[0] - 35, height - Level_01.startCar1[1]);
         car2.setDirection(90);
         car2.getGraphics().setFill(Color.MEDIUMPURPLE);
 
 
-        RacingGame rg = new RacingGame();
+        try {
+            Registry registry = LocateRegistry.getRegistry("localhost", 8082);
+            IRemotePublisherForListener publisher = (IRemotePublisherForListener) registry.lookup("carRegistry");
+            updateCar = (IupdateCar) registry.lookup("carUpdateRegistry");
+            publisher.subscribeRemoteListener(RacingGame.this, "car");
+        } catch (Exception e) {
+            System.out.println("Error setting remote listener" + e);
+            e.printStackTrace();
+        }
 
 
         container.getChildren().addAll(car1.getGraphicsImg(), car2.getGraphicsImg());
@@ -115,7 +112,12 @@ public class RacingGame extends Application implements IRemotePropertyListener {
             checkForCollisions(car1);
 
             //TODO Push x, y & direction to server
-
+            try {
+                System.out.println(car1.locationX.doubleValue() + car1.locationY.doubleValue() + car1.direction);
+                updateCar.sendCar(new carVector(car1.locationX.doubleValue(), car1.locationY.doubleValue(), car1.direction));
+            } catch (RemoteException e1) {
+                e1.printStackTrace();
+            }
 
         }));
         gameLoop.setCycleCount(Timeline.INDEFINITE);
