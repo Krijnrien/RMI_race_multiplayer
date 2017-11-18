@@ -8,6 +8,8 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import Shared.IupdateCar;
 import Shared.carVector;
@@ -31,19 +33,20 @@ public class RacingGame extends Application implements IRemotePropertyListener {
     private Polyline linesLower;
     private int laps = 2;
     static boolean server;
-    static String address = "localhost";
+    static String participantName;
     double width = 800;
     double height = 600;
     private Car car1;
     private Car car2;
     private ArrayList<Line> checkPoints = new ArrayList<>();
+    private Map<String, Car> participants = new HashMap<>();
     private int checks = 0;
     private boolean keyPressed = false;
     private KeyCode keyPressedCode = null;
     private Timeline gameLoop;
     private long time = 0;
     private IupdateCar updateCar;
-
+    private Pane container;
 
     public static void main(String[] args) {
         launch(args);
@@ -53,25 +56,27 @@ public class RacingGame extends Application implements IRemotePropertyListener {
     public void start(Stage primaryStage) throws Exception {
         UnicastRemoteObject.exportObject(this, 0);
 
-        Pane container = new Pane();
+
+        System.out.println(participantName);
+
+        container = new Pane();
         Scene scene = new Scene(container, width, height);
         primaryStage.setScene(scene);
         primaryStage.show();
 
         loadLevel(Level_01.lowerBounds, Level_01.upperBounds, container.getChildren());
         car1 = new Car();
-        car2 = new Car();
         car1.setLocationByVector(Level_01.startCar1[0] - 35, height - Level_01.startCar1[1]);
         car1.setDirection(90);
         car1.getGraphics().setFill(Color.MEDIUMPURPLE);
 
+        car2 = new Car();
         car2.setLocationByVector(Level_01.startCar1[0] - 35, height - Level_01.startCar1[1]);
         car2.setDirection(90);
         car2.getGraphics().setFill(Color.MEDIUMPURPLE);
 
-
         try {
-            Registry registry = LocateRegistry.getRegistry("localhost", 8082);
+            Registry registry = LocateRegistry.getRegistry("localhost", 8087);
             IRemotePublisherForListener publisher = (IRemotePublisherForListener) registry.lookup("carRegistry");
             updateCar = (IupdateCar) registry.lookup("carUpdateRegistry");
             publisher.subscribeRemoteListener(RacingGame.this, "car");
@@ -104,7 +109,7 @@ public class RacingGame extends Application implements IRemotePropertyListener {
                 if (keyPressedCode == KeyCode.UP) {
                     car1.speed += 0.15;
                 } else if (keyPressedCode == KeyCode.DOWN) {
-                    car1.speed -= 0.05;
+                    car1.speed -= 0.2;
                 }
             }
 
@@ -113,8 +118,8 @@ public class RacingGame extends Application implements IRemotePropertyListener {
 
             //TODO Push x, y & direction to server
             try {
-                System.out.println(car1.locationX.doubleValue() + car1.locationY.doubleValue() + car1.direction);
-                updateCar.sendCar(new carVector(car1.locationX.doubleValue(), car1.locationY.doubleValue(), car1.direction));
+               // System.out.println("X: " + car1.locationX.doubleValue() + "Y: " + car1.locationY.doubleValue() + "D: " + car1.direction);
+                updateCar.sendCar(new carVector(participantName, car1.locationX.doubleValue(), car1.locationY.doubleValue(), car1.direction));
             } catch (RemoteException e1) {
                 e1.printStackTrace();
             }
@@ -127,16 +132,29 @@ public class RacingGame extends Application implements IRemotePropertyListener {
     }
 
     public void propertyChange(PropertyChangeEvent propertyChangeEvent) throws RemoteException {
-        //TODO Update car position
-        //If car ID is own car, do nothing
-        //If car isnt in list of cars yet, add and position
-
-        //  carVector carVector = new carVector();
-        System.out.println("property changed!");
+        //TODO Check if carId exists : if not, add new car to list
         carVector carvector = (carVector) propertyChangeEvent.getNewValue();
-        car2.setLocationByVector(carvector.getLocationX(), carvector.getLocationY());
-        car2.setDirection(carvector.getDirection());
+        String carName = carvector.getName();
+        //System.out.println("property changed " + carName + carvector.getName());
+        if (!participantName.equals(carName)) {
+            if (!participants.containsKey(carName)) {
+                System.out.println("Contains key" + carName);
+                Car car = new Car();
+                car.getGraphics().setFill(Color.MEDIUMPURPLE);
+                participants.put(carName, new Car());
+                // TODO Add graphics to container children
 
+
+                car.setLocationByVector(carvector.getLocationX(), carvector.getLocationY());
+                car.setDirection(carvector.getDirection());
+            } else {
+                //Car car = participants.get(carName);
+               // System.out.println("Other car coords X:" + car.locationX.getValue());
+                car2.setLocationByVector(carvector.getLocationX(), carvector.getLocationY());
+                car2.setDirection(carvector.getDirection());
+            }
+            //TODO Get participant by getId in hashmap, then update its location
+        }
     }
 
     private void loadLevel(double[] level_upper, double[] level_lower, ObservableList<Node> list) {
@@ -144,15 +162,6 @@ public class RacingGame extends Application implements IRemotePropertyListener {
         linesLower = new Polyline(level_lower);
         list.add(Level_01.levelGraphics);
         Line l;
-        for (int i = 0; i < Level_01.checkPoints.length; i += 4) {
-
-            l = new Line(Level_01.checkPoints[i], Level_01.checkPoints[i + 1], Level_01.checkPoints[i + 2], Level_01.checkPoints[i + 3]);
-            l.setStroke(Color.GREEN);
-            l.setStrokeWidth(5);
-            l.setOpacity(0.2);
-            checkPoints.add(l);
-            list.add(l);
-        }
     }
 
     private void checkForCollisions(Car car) {

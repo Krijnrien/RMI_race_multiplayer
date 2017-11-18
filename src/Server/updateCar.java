@@ -12,6 +12,7 @@ public class updateCar extends UnicastRemoteObject implements IupdateCar, Serial
 
     private RemotePublisher remotePublisher;
 
+
     updateCar(RemotePublisher publisher) throws RemoteException {
         remotePublisher = publisher;
         remotePublisher.registerProperty("car");
@@ -22,7 +23,8 @@ public class updateCar extends UnicastRemoteObject implements IupdateCar, Serial
     }
 
     public void sendCar(carVector _carVector) throws RemoteException {
-        remotePublisher.inform("car", null, new carVector(_carVector.getLocationX(), _carVector.getLocationY() - 30, _carVector.getDirection()));
+        System.out.println("Server sendCar: " + _carVector.getName());
+        remotePublisher.inform("car", null, _carVector);
 
     }
 }

@@ -7,7 +7,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 public class RMIServer {
-    private static final int portNr = 8082;
+    private static final int portNr = 8087;
 
     public static void main(String[] args) throws RemoteException {
         System.out.println("Server started");

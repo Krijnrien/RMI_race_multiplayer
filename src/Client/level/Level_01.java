@@ -69,9 +69,6 @@ public class Level_01 {
         784.0, 127.0, 750.0, 74.0,
         750.0, 74.0, 708.0, 40.0
     };
-    public static double checkPoints[] = {
-        95.0, 340.0, 6.0, 341.0,
-    };
     public static double startCar2[] = {73.0, 326.0};
     public static double startCar1[] = {24.0, 329.0};
     public static ImageView levelGraphics = new ImageView(new Image(Level_01.class

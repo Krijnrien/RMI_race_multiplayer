@@ -7,11 +7,9 @@
 <?import javafx.scene.layout.*?>
 
 
-<AnchorPane id="AnchorPane" prefHeight="124.0" prefWidth="393.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="com.racingGame.DialogDesignController">
+<AnchorPane id="AnchorPane" prefHeight="124.0" prefWidth="393.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="Client.DialogDesignController">
    <children>
-      <ToggleButton fx:id="hostbtn" layoutX="79.0" layoutY="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Host" />
-      <ToggleButton fx:id="playbtn" layoutX="209.0" layoutY="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Play" />
-      <TextField fx:id="address" disable="true" layoutX="79.0" layoutY="54.0" prefHeight="25.0" prefWidth="230.0" promptText="address" />
-      <Button fx:id="continuebtn" defaultButton="true" disable="true" layoutX="282.0" layoutY="86.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Continue" />
+      <TextField fx:id="participantName" layoutX="79.0" layoutY="54.0" prefHeight="25.0" prefWidth="230.0" promptText="Name" />
+      <Button fx:id="continuebtn" defaultButton="true" layoutX="282.0" layoutY="86.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Continue" />
    </children>
 </AnchorPane>

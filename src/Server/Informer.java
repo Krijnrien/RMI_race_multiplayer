@@ -30,7 +30,7 @@ class Informer extends UnicastRemoteObject implements Serializable {
     public void mockCarVector(carVector _carVector) {
         try {
             System.out.println("Sending from server!");
-            remotePublisher.inform("car", null, new carVector(_carVector.getLocationX(), _carVector.getLocationY() - 30, _carVector.getDirection()));
+            remotePublisher.inform("car", null, _carVector);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
