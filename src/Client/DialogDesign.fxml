@@ -10,6 +10,6 @@
 <AnchorPane id="AnchorPane" prefHeight="124.0" prefWidth="393.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="Client.DialogDesignController">
    <children>
       <TextField fx:id="participantName" layoutX="79.0" layoutY="54.0" prefHeight="25.0" prefWidth="230.0" promptText="Name" />
-      <Button fx:id="continuebtn" defaultButton="true" layoutX="282.0" layoutY="86.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Continue" />
+      <Button fx:id="buttonContinue" defaultButton="true" layoutX="282.0" layoutY="86.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Continue" />
    </children>
 </AnchorPane>

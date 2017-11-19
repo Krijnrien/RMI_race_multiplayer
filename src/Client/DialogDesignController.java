@@ -7,6 +7,7 @@ package Client;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -14,22 +15,22 @@ import javafx.scene.control.TextField;
 
 public class DialogDesignController implements Initializable {
 
-    @FXML
-    Button continuebtn;
-    @FXML
-    TextField participantName;
+	@FXML
+	Button buttonContinue;
+	@FXML
+	TextField participantName;
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        continuebtn.setOnAction(e -> {
-            RacingGame.participantName = participantName.getText();
-            RacingGame game = new RacingGame();
-            try {
-                game.start(OptionDialog.window);
-                OptionDialog.window.centerOnScreen();
-            } catch (Exception ignored) {
-            }
-        });
-    }
+	@Override
+	public void initialize(URL url, ResourceBundle rb) {
+		buttonContinue.setOnAction(e -> {
+			RacingGame.participantName = participantName.getText();
+			RacingGame game = new RacingGame();
+			try {
+				game.start(OptionDialog.window);
+				OptionDialog.window.centerOnScreen();
+			} catch(Exception ignored) {
+			}
+		});
+	}
 
 }
