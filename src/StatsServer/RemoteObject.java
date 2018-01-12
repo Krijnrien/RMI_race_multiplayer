@@ -11,6 +11,7 @@ public class RemoteObject extends UnicastRemoteObject implements IRemoteObject, 
 
     public void addScore(ScoreObject _rmiObject) throws RemoteException {
         System.out.println(_rmiObject.getFinishTime());
+        //todo = new DatabaseHandler.insertNewScore()?
     }
 
 }
