@@ -24,8 +24,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import publisher.IRemotePropertyListener;
-import publisher.IRemotePublisherForListener;
+import PositionServer.publisher.IRemotePropertyListener;
+import PositionServer.publisher.IRemotePublisherForListener;
 
 public class RacingGame extends Application implements IRemotePropertyListener {
 	private Polyline linesUpper;

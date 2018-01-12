@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package publisher;
+package PositionServer.publisher;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -17,7 +17,7 @@ import java.util.List;
 public class RemotePublisher extends UnicastRemoteObject 
     implements IRemotePublisherForListener, IRemotePublisherForDomain {
 
-    // Local publisher
+    // Local Server.publisher
     Publisher publisher;
     
     /**

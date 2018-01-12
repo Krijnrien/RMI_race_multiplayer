@@ -1,12 +1,12 @@
-package Server;
+package StatsServer;
 
+import PositionServer.publisher.RemotePublisher;
 import Shared.carVector;
-import publisher.RemotePublisher;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.*;
+import java.util.Timer;
 
 class Informer extends UnicastRemoteObject implements Serializable {
     private RemotePublisher remotePublisher;
@@ -15,16 +15,6 @@ class Informer extends UnicastRemoteObject implements Serializable {
         remotePublisher = publisher;
         remotePublisher.registerProperty("car");
         Timer timer = new Timer();
-
-        /*timer.schedule(new TimerTask() {
-            int i = 0;
-
-            @Override
-            public void run() {
-                mockCarVector(i);
-                i++;
-            }
-        }, 0, 100);*/
     }
 
     public void mockCarVector(carVector _carVector) {

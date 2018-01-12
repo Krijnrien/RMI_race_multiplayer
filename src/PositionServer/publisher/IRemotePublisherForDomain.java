@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package publisher;
+package PositionServer.publisher;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
 /**
- * IRemotePublisherForDomain. Interface to remote publisher in order to register
+ * IRemotePublisherForDomain. Interface to remote Server.publisher in order to register
  * and unregister properties, and to inform (remote) property listeners about 
  * changes of registered properties. In case a property changes in the domain, 
  * all listeners subscribed to that property will be informed through a 
@@ -22,7 +22,7 @@ import java.util.List;
 public interface IRemotePublisherForDomain extends Remote {
     
     /**
-     * Register property. Register property at this publisher. From now on
+     * Register property. Register property at this Server.publisher. From now on
      * listeners can subscribe to this property. Nothing changes in case given
      * property was already registered. 
      *
@@ -32,12 +32,12 @@ public interface IRemotePublisherForDomain extends Remote {
     public void registerProperty(String property) throws RemoteException;
     
     /**
-     * Unregister property. Unregister property at this publisher. From now on
+     * Unregister property. Unregister property at this Server.publisher. From now on
      * listeners subscribed to this property will not be informed on changes.
      * In case given property is null-String, all properties (except null) will
      * be unregistered.
      *
-     * @param property registered property at this publisher
+     * @param property registered property at this Server.publisher
      * @throws java.rmi.RemoteException
      */
     public void unregisterProperty(String property) throws RemoteException;

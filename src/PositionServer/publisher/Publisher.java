@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package publisher;
+package PositionServer.publisher;
 
 import java.beans.PropertyChangeEvent;
 import java.rmi.RemoteException;
@@ -233,7 +233,7 @@ public class Publisher {
     }
 
     /**
-     * Register property. Register property at this publisher. From now on
+     * Register property. Register property at this Server.publisher. From now on
      * listeners can subscribe to this property. Nothing changes in case given
      * property was already registered.
      *
@@ -254,12 +254,12 @@ public class Publisher {
     }
 
     /**
-     * Unregister property. Unregister property at this publisher. From now on
+     * Unregister property. Unregister property at this Server.publisher. From now on
      * listeners subscribed to this property will not be informed on changes. In
      * case given property is null-String, all properties (except null) will be
      * unregistered.
      *
-     * @param property registered property at this publisher
+     * @param property registered property at this Server.publisher
      */
     public void unregisterProperty(String property) {
         // Check whether property is registered

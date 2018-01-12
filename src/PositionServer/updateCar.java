@@ -1,8 +1,8 @@
-package Server;
+package PositionServer;
 
 import Shared.IupdateCar;
 import Shared.carVector;
-import publisher.RemotePublisher;
+import PositionServer.publisher.RemotePublisher;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;

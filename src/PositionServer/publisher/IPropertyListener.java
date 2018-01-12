@@ -1,4 +1,4 @@
-package publisher;
+package PositionServer.publisher;
 
 import java.util.*;
 

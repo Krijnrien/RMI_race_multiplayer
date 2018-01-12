@@ -1,6 +1,6 @@
-package Server;
+package PositionServer;
 
-import publisher.RemotePublisher;
+import PositionServer.publisher.RemotePublisher;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -19,7 +19,6 @@ public class RMIServer {
         updateCar updateCarRemote = new updateCar(publisher);
         Informer informer = new Informer(publisher);
         Registry registry = LocateRegistry.createRegistry(portNr);
-        registry.rebind("Effectenbeurs", informer);
         registry.rebind("carRegistry", publisher);
         registry.rebind("carUpdateRegistry", updateCarRemote);
     }
