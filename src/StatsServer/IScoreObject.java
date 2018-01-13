@@ -3,7 +3,9 @@ package StatsServer;
 import java.io.Serializable;
 
 public interface IScoreObject extends Serializable {
-	String getFinishTime();
+    String getUsername();
+    void setUsername(String username);
 
-	void setFinishTime(String _finishTime);
+    long getFinishTime();
+    void setFinishTime(long _finishTime);
 }

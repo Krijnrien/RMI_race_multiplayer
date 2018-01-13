@@ -70,6 +70,7 @@ public class Level_01 {
 			750.0, 74.0, 708.0, 40.0
 	};
 
+
 	public static double[] getUpperBounds() {
 		return upperBounds;
 	}

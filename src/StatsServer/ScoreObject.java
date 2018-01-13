@@ -1,18 +1,27 @@
 package StatsServer;
 
 public class ScoreObject implements IScoreObject {
-	private String finishTime;
+    private String username;
+    private long finishTime;
 
-	ScoreObject(String _finishTime) {
-		this.finishTime = finishTime;
-	}
+    public ScoreObject(String _username, long _finishTime) {
+        this.username = _username;
+        this.finishTime = _finishTime;
+    }
 
-	public String getFinishTime() {
-		return finishTime;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public void setFinishTime(String _finishTime) {
-		this.finishTime = _finishTime;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
+    public long getFinishTime() {
+        return finishTime;
+    }
+
+    public void setFinishTime(long finishTime) {
+        this.finishTime = finishTime;
+    }
 }

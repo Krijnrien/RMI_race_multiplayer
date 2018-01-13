@@ -15,22 +15,21 @@ import javafx.scene.control.TextField;
 
 public class DialogDesignController implements Initializable {
 
-	@FXML
-	Button buttonContinue;
-	@FXML
-	TextField participantName;
+    @FXML
+    Button buttonContinue;
+    @FXML
+    TextField participantName;
 
-	@Override
-	public void initialize(URL url, ResourceBundle rb) {
-		buttonContinue.setOnAction(e -> {
-			RacingGame.participantName = participantName.getText();
-			RacingGame game = new RacingGame();
-			try {
-				game.start(OptionDialog.window);
-				OptionDialog.window.centerOnScreen();
-			} catch(Exception ignored) {
-			}
-		});
-	}
-
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        buttonContinue.setOnAction(e -> {
+            RacingGame.participantName = participantName.getText();
+            RacingGame game = new RacingGame();
+            try {
+                game.start(OptionDialog.window);
+                OptionDialog.window.centerOnScreen();
+            } catch (Exception ignored) {
+            }
+        });
+    }
 }
