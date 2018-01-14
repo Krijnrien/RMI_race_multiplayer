@@ -8,23 +8,23 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
-class Informer extends UnicastRemoteObject implements Serializable {
+class MockInformer extends UnicastRemoteObject implements Serializable {
     private RemotePublisher remotePublisher;
 
-    Informer(RemotePublisher publisher) throws RemoteException {
+    MockInformer(RemotePublisher publisher) throws RemoteException {
         remotePublisher = publisher;
         remotePublisher.registerProperty("car");
         Timer timer = new Timer();
 
-        /*timer.schedule(new TimerTask() {
+        timer.schedule(new TimerTask() {
             int i = 0;
 
             @Override
             public void run() {
-                mockCarVector(i);
+                mockCarVector(new carVector("username", 15, 20 - 30, 80));
                 i++;
             }
-        }, 0, 100);*/
+        }, 0, 100);
     }
 
     public void mockCarVector(carVector _carVector) {

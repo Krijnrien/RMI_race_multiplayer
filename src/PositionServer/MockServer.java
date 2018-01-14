@@ -6,20 +6,19 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-public class RMIServer {
+public class MockServer {
     private static final int portNr = 8087;
 
     public static void main(String[] args) throws RemoteException {
         System.out.println("Server started");
-        RMIServer rmiServer = new RMIServer();
+        MockServer mockServer = new MockServer();
     }
 
-    private RMIServer() throws RemoteException {
+    private MockServer() throws RemoteException {
         RemotePublisher publisher = new RemotePublisher();
-        updateCar updateCarRemote = new updateCar(publisher);
+        MockInformer informer = new MockInformer(publisher);
         Registry registry = LocateRegistry.createRegistry(portNr);
-        registry.rebind("carRegistry", publisher);
-        registry.rebind("carUpdateRegistry", updateCarRemote);
+        registry.rebind("carUpdateRegistry", informer);
     }
 }
 

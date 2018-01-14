@@ -7,9 +7,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,24 +36,30 @@ public class RacingGame extends Application implements IRemotePropertyListener {
     private Car car1;
     private Car car2;
     private Map<String, Car> participants = new HashMap<>();
-    private boolean keyPressed = false;
-    private KeyCode keyPressedCode = null;
+    public boolean keyPressed = false;
+    public KeyCode keyPressedCode = null;
     private IupdateCar updateCar;
     private Registry registry;
     private IScoreHandler scoreHandler;
     private Line finishLine = new Line();
+    public Pane container;
 
     public static void main(String[] args) {
         launch(args);
     }
 
+    /**
+     * Creates two cars for controlling and sends RMI car object for positionServer identification.
+     * @param primaryStage
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         UnicastRemoteObject.exportObject(this, 0);
 
         System.out.println(participantName);
 
-        Pane container = new Pane();
+        container = new Pane();
         double width = 800;
         double height = 600;
         Scene scene = new Scene(container, width, height);
@@ -83,17 +86,31 @@ public class RacingGame extends Application implements IRemotePropertyListener {
             System.out.println("Error setting remote listener" + e);
             e.printStackTrace();
         }
-
-
         container.getChildren().addAll(car1.getGraphicsImg(), car2.getGraphicsImg());
+        keyPressed();
+        gameLoop();
+
+        primaryStage.setOnCloseRequest(e -> System.exit(1));
+    }
+
+    /**
+     * Sets the keycode pressed on the gameloop in class variable
+     */
+    public void keyPressed() {
         container.setOnKeyPressed(e -> {
             keyPressed = true;
             keyPressedCode = e.getCode();
         });
         container.setOnKeyReleased(e -> keyPressed = false);
+    }
 
+
+    /**
+     * Loop of the game. No delta time is implementated thus runs as fast as possible giving others possible advantage.
+     * Each iteration key press is detected and saved, current implementation only allows one keypress at a time.
+     */
+    public void gameLoop() {
         Timeline gameLoop = new Timeline(new KeyFrame(Duration.millis(1000 / 30), e -> {
-
             /*
              * Handling car controls inside Keyframe as it's smoother as it updates faster
              */
@@ -132,9 +149,14 @@ public class RacingGame extends Application implements IRemotePropertyListener {
         gameLoop.setCycleCount(Timeline.INDEFINITE);
         gameLoop.play();
         container.requestFocus();
-        primaryStage.setOnCloseRequest(e -> System.exit(1));
     }
 
+    /**
+     * RMI property change event.
+     * Sets the car location received through RMI and recognized by the hashmap car IDs.
+     * @param propertyChangeEvent
+     * @throws RemoteException
+     */
     public void propertyChange(PropertyChangeEvent propertyChangeEvent) throws RemoteException {
         //TODO Check if carId exists : if not, add new car to list
         carVector carvector = (carVector) propertyChangeEvent.getNewValue();
@@ -148,7 +170,6 @@ public class RacingGame extends Application implements IRemotePropertyListener {
                 participants.put(carName, new Car());
                 // TODO Add graphics to container children
 
-
                 car.setLocationByVector(carvector.getLocationX(), carvector.getLocationY());
                 car.setDirection(carvector.getDirection());
             } else {
@@ -161,8 +182,11 @@ public class RacingGame extends Application implements IRemotePropertyListener {
         }
     }
 
+    /**
+     * Called when a car crosses the finish.
+     * Sends RMI object to stats server with the finish time and username.
+     */
     private void finished() {
-
         try {
             this.registry = LocateRegistry.getRegistry("localhost", 8086);
             scoreHandler = (IScoreHandler) registry.lookup("finishRegistry");
@@ -172,6 +196,12 @@ public class RacingGame extends Application implements IRemotePropertyListener {
         }
     }
 
+    /**
+     * loads level boundaries and texture.
+     * @param level_upper upper double points for wall.
+     * @param level_lower lower double points for wall.
+     * @param list Javafx observable list to add graphics to.
+     */
     private void loadLevel(double[] level_upper, double[] level_lower, ObservableList<Node> list) {
         linesUpper = new Polyline(level_upper);
         linesLower = new Polyline(level_lower);
@@ -183,6 +213,10 @@ public class RacingGame extends Application implements IRemotePropertyListener {
         list.add(finishLine);
     }
 
+    /**
+     * Called every game loop iteration. Check for car and wall collission by using shape intersection method.
+     * @param car
+     */
     private void checkForCollisions(Car car) {
         if (!((Path) Shape.intersect(car.bounds, finishLine)).getElements().isEmpty()) {
             finished();

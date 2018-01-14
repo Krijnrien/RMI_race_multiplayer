@@ -36,7 +36,6 @@ class databaseHandler {
     }
 
     public void createTablesIfNotExist() {
-        dbOpenConnection();
         try {
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS finish (id INTEGER PRIMARY KEY AUTOINCREMENT, time STRING);");
         } catch (SQLException e) {
@@ -48,9 +47,10 @@ class databaseHandler {
 
     public void dbOpenConnection() {
         try {
-            connection = DriverManager.getConnection("jdbc:sqlite:race.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:memory:");
             statement = connection.createStatement();
             statement.setQueryTimeout(30);
+            createTablesIfNotExist();
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
